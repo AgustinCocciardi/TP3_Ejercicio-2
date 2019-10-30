@@ -24,17 +24,20 @@ int main(int argc, char* argv[]){
         exit(4);
     }
 
-    if (strchr(argv[2],'.') || strchr(argv[2],','))
+    if (strchr(argv[2],'.') || strchr(argv[2],',') || strchr(argv[2],'0') || strchr(argv[2],'-'))
         {
-            printf("Error: el parámetro cantidad de hilos debe ser entero\n");
+            printf("\nError: el parámetro cantidad de hilos debe ser entero y mayor que 0\n");
             exit(5);
         }
 
     int numeroDeHilos = atoi(argv[2]);
     char *nombreArchivo = argv[1];
     
-        
-        
+    int cantValoresPorHilo[numeroDeHilos];
+    for (int i = 0; i < numeroDeHilos; i++)
+    {
+        cantValoresPorHilo[i]= 0;
+    }
 
         int cantidad_lineas_archivo = 0, i = 0;
         char palabra[100];
@@ -43,7 +46,7 @@ int main(int argc, char* argv[]){
         archivo = fopen(nombreArchivo,"r");
         if (archivo == NULL)
         {
-            printf("Error al intentar leer el archivo que usted pasó por parámetro. Es probable que no exista o que no se pueda abrir en modo lectura\n");
+            printf("\nError al intentar leer el archivo que usted pasó por parámetro. Es probable que no exista o que no se pueda abrir en modo lectura\n");
             exit(1);
         }
         while (feof(archivo) == 0)
@@ -56,6 +59,8 @@ int main(int argc, char* argv[]){
         float vectorSuma[cantidad_lineas_archivo];
         float vector1[cantidad_lineas_archivo];
         float vector2[cantidad_lineas_archivo];
+
+        int total = cantidad_lineas_archivo*2;
 
         FILE *lectura;
         lectura = fopen("vector.txt","r");
@@ -72,6 +77,32 @@ int main(int argc, char* argv[]){
         }
         fclose(lectura);
 
+        if (numeroDeHilos > (cantidad_lineas_archivo*2))
+        {
+            printf("\nEl archivo tiene un total de %d elementos y usted quiere trabajar con %d hilos\nHay más hilos que elementos\n", cantidad_lineas_archivo*2, numeroDeHilos);
+            exit(5);
+        }
+        
+        i=0;
+        while (total >= 1)
+        {
+            cantValoresPorHilo[i]++;
+            total--;
+            i++;
+            if (i == numeroDeHilos)
+            {
+                i=0;
+            }
+        }
+        
+        printf("\n");
+        for (int i = 0; i < numeroDeHilos; i++)
+        {
+            printf("El hilo %d va a operar %d valores\n", i+1, cantValoresPorHilo[i]);
+        }
+        
+        printf("\n");
+        printf("Resultado de la operación: \n");
         for (int i = 0; i < cantidad_lineas_archivo; i++)
         {
             printf("%.2f + %.2f = %.2f\n", vector1[i], vector2[i], (vector1[i]+vector2[i]));
