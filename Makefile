@@ -1,2 +1,2 @@
-make : 
-	gcc -o Ejercicio2 Ejercicio2.c 
+make :
+	gcc Ejercicio2.c -o Ejercicio2 -l pthread 
