@@ -38,7 +38,7 @@ void* sumarVectores(void* args){
         {
             datosHilo->vectorResultado[iterador] += datosHilo->vector1[iterador];       //Sumo el vector 1 al vector resultado
         }
-        if (global %2 != 0)                                                             //Este if me dice si debo tomar el vector 2
+        if (global %2 == 0)                                                             //Este if me dice si debo tomar el vector 2
         {
             datosHilo->vectorResultado[iterador] += datosHilo->vector2[iterador];       //Sumo el vector 2 al vector resultado
             iterador++;                                                                 //Incremento el iterador
